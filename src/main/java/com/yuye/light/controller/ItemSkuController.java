@@ -1,18 +1,21 @@
 package com.yuye.light.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.yuye.light.VO.ItemSkuReqVO;
 import com.yuye.light.mbg.model.Itemsku;
-import com.yuye.light.mbg.model.ItemskuExample;
 import com.yuye.light.service.ItemSkuService;
+import com.yuye.light.service.pipeline.Cat;
+import com.yuye.light.service.pipeline.Dog;
+import com.yuye.light.service.pipeline.Pipeline;
+import com.yuye.light.service.pipeline.PipelineFactory;
+import com.yuye.light.service.strtategy.AnimalService;
+import com.yuye.light.service.strtategy.AnimalStrategy;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +29,13 @@ import java.util.List;
 public class ItemSkuController {
     @Autowired
     private ItemSkuService itemSkuService;
+
+    @Autowired
+    private AnimalStrategy animalStrategy;
+
+    @Autowired
+    private PipelineFactory pipelineFactory;
+
     @ApiOperation("插入商品")
     @RequestMapping(value = "insert",method = RequestMethod.POST)
     @ResponseBody
@@ -42,5 +52,28 @@ public class ItemSkuController {
         ItemSkuReqVO itemskuExample = new ItemSkuReqVO();
         List<Itemsku> itemskus = itemSkuService.selectByExample(itemskuExample);
         return JSONUtils.toJSONString(itemskus);
+    }
+
+    @ApiOperation("查询animal")
+    @ResponseBody
+    @RequestMapping(value = "findAnimall",method = RequestMethod.GET)
+    public String getName(@RequestParam("code") String code){
+        Pipeline<Cat> catPipeline = pipelineFactory.getCatPipeline(code);
+        if (catPipeline !=null) {
+            Cat cat = new Cat();
+            cat.setAge(1);
+            cat.setEventType("a");
+            cat.setName("猫");
+            boolean invoke1 = catPipeline.invoke(cat);
+        }
+        Pipeline<Dog> dogPipeline = pipelineFactory.getDogPipeline(code);
+        if (dogPipeline!=null) {
+            Dog dog = new Dog();
+            dog.setAge(2);
+            dog.setEventType("z");
+            dog.setName("狗");
+            boolean invoke = dogPipeline.invoke(dog);
+        }
+        return "success";
     }
 }
