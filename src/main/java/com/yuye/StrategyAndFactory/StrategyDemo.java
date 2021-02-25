@@ -7,7 +7,7 @@ package com.yuye.StrategyAndFactory;
 public class StrategyDemo {
     public static void main(String[] args) {
 
-        Strategy strategy = StrategyFactory.getInstance().creator(3);
+        Strategy strategy = StrategyFactory.getInstance().creator(4);
         Double aDouble = strategy.calRecharge(100.0, RechargeTypeEnum.BUSI_ACCOUNTS);
         System.out.println(aDouble);
     }
