@@ -12,6 +12,7 @@ public class GroupLeader extends Handler {
             return true;
         }else {
             System.out.println("小组长传给了他的上司");
+            System.out.println("=========");
             return getHandler().approve(day);
         }
     }
