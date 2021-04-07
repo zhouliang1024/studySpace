@@ -1,7 +1,6 @@
 package com.yuye.light.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.yuye.light.VO.ItemSkuReqVO;
 import com.yuye.light.mbg.model.Itemsku;
 import com.yuye.light.service.ItemSkuService;
@@ -9,8 +8,8 @@ import com.yuye.light.service.pipeline.Cat;
 import com.yuye.light.service.pipeline.Dog;
 import com.yuye.light.service.pipeline.Pipeline;
 import com.yuye.light.service.pipeline.PipelineFactory;
-import com.yuye.light.service.strtategy.AnimalService;
 import com.yuye.light.service.strtategy.AnimalStrategy;
+import com.yuye.light.observer.ListenService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,9 @@ public class ItemSkuController {
 
     @Autowired
     private PipelineFactory pipelineFactory;
+
+    @Autowired
+    private ListenService listenService;
 
     @ApiOperation("插入商品")
     @RequestMapping(value = "insert",method = RequestMethod.POST)
@@ -74,6 +76,14 @@ public class ItemSkuController {
             dog.setName("狗");
             boolean invoke = dogPipeline.invoke(dog);
         }
+        return "success";
+    }
+
+    @ApiOperation("查询所有商品")
+    @RequestMapping(value = "listen",method = RequestMethod.GET)
+    @ResponseBody
+    public String testObserver(){
+        listenService.enventTest();
         return "success";
     }
 }
