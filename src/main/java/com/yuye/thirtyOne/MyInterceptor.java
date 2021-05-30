@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
  * @Date 2020/10/30 11:14 上午
  */
 public class MyInterceptor implements MethodInterceptor {
+
     private Object target;//目标类
 
     public MyInterceptor(Object target) {
